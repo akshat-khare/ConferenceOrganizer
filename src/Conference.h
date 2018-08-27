@@ -27,6 +27,9 @@ private:
 
     // The number of papers in a session.
     int papersInSession;
+
+    // score of this conference arrangement.
+    int score;
 public:
     Conference();
     

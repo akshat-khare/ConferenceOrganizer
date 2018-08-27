@@ -38,6 +38,21 @@ void SessionOrganizer::organizePapers ( )
     }
 }
 
+Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
+{
+    Conference* ans;
+    
+}
+
+Conference* SessionOrganizer::maxScoreConference()
+{
+    while(bestNeighbourConference(conference)!=conference)
+    {
+        conference=bestNeighbourConference(conference);
+    }
+    return conference;
+}
+
 void SessionOrganizer::readInInputFile ( string filename )
 {
     vector<string> lines;

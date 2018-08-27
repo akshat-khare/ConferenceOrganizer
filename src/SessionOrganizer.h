@@ -60,6 +60,17 @@ public:
      * Organize the papers according to some algorithm.
      */
     void organizePapers();
+    /**
+     * Returns the neighbour conference with the best score
+     */
+    Conference* bestNeighbourConference(Conference* c);
+
+    
+    /**
+     * Main function that maximises the outcome.
+     */
+    Conference* maxScoreConference();
+
     
     
     /**

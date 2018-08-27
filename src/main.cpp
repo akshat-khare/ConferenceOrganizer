@@ -74,7 +74,7 @@ int main ( int argc, char** argv )
     SessionOrganizer *organizer  = new SessionOrganizer( inputfilename );
 
     // Organize the papers into tracks based on similarity.
-    organizer->organizePapers ( );
+    organizer->organizePapersRandomly ( );
 
     organizer->printSessionOrganiser ( argv[2]);
 

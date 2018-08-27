@@ -51,6 +51,11 @@ int Conference::getPapersInSession ( )
     return papersInSession;
 }
 
+int Conference::getScore ( )
+{
+    return score;
+}
+
 Track Conference::getTrack ( int index )
 {
     if ( index < parallelTracks )

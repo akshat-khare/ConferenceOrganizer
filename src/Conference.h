@@ -73,7 +73,7 @@ public:
     int getPapersInSession();
     
     
-    int Conference::getScore ( );
+    int getScore ( );
     /**
      * Gets the track at the specified index.
      * @param index is the index of the specified track.

@@ -1,1 +1,2 @@
-# ConferenceOrganizer
+# ConferenceOrganizer  
+AI Assignment 1

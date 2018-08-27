@@ -34,6 +34,7 @@ private:
     int parallelTracks ;
     int papersInSession ;
     int sessionsInTrack ;
+    int numpapers;
 
     Conference *conference;
 
@@ -60,6 +61,7 @@ public:
      * Organize the papers according to some algorithm.
      */
     void organizePapers();
+    void organizePapersRandomly();
     
     
     /**
@@ -74,6 +76,8 @@ public:
      * @return the score.
      */
     double scoreOrganization();
+    
+    double scoreOrganizationarg(Conference * );
     
     
     void printSessionOrganiser(char *);

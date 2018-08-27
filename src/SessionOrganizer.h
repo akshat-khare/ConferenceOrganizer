@@ -62,6 +62,17 @@ public:
      */
     void organizePapers();
     void organizePapersRandomly();
+    /**
+     * Returns the neighbour conference with the best score
+     */
+    Conference* bestNeighbourConference(Conference* c);
+
+    
+    /**
+     * Main function that maximises the outcome.
+     */
+    Conference* maxScoreConference();
+
     
     
     /**

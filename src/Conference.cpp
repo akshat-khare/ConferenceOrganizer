@@ -83,6 +83,11 @@ void Conference::setPaper ( int trackIndex, int sessionIndex, int paperIndex, in
     }
 }
 
+void Conference::setScore(int score)
+{
+    this->score=score;
+}
+
 void Conference::printConference (char * filename )
 {
     ofstream ofile(filename);

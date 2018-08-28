@@ -74,6 +74,8 @@ public:
     
     
     int getScore ( );
+
+    void setScore(int score);
     /**
      * Gets the track at the specified index.
      * @param index is the index of the specified track.

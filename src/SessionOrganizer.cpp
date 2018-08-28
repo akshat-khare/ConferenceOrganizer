@@ -93,8 +93,14 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
 {
     Conference* ans;
     int score=c->getScore();
-    int min=score;
-    int mini,minj,mink,minl,minm,minn;
+    int max=score;
+    int maxi,maxj,maxk,maxl,maxm,maxn;
+    maxi=0;
+    maxj=0;
+    maxk=0;
+    maxl=0;
+    maxm=0;
+    maxn=0;
     for(int i=0;i<c->getParallelTracks();i++)
     {
         for(int j=0;j<c->getSessionsInTrack();j++)
@@ -141,15 +147,15 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                             diffn2=diffn2+tradeoffCoefficient*distanceMatrix[p2][((c->getTrack(l)).getSession(m)).getPaper(o)];
                                         }
                                     }
-                                    if(score-simo1-simo2-diffo1-diffo2+simn1+simn2+diffn1+diffn2<min)
+                                    if(score-simo1-simo2-diffo1-diffo2+simn1+simn2+diffn1+diffn2>max)
                                     {
-                                        min=score;
-                                        mini=i;
-                                        minj=j;
-                                        mink=k;
-                                        minl=l;
-                                        minm=m;
-                                        minn=n;
+                                        max=score-simo1-simo2-diffo1-diffo2+simn1+simn2+diffn1+diffn2;
+                                        maxi=i;
+                                        maxj=j;
+                                        maxk=k;
+                                        maxl=l;
+                                        maxm=m;
+                                        maxn=n;
                                     }
                                 }
                                 else//different time slot
@@ -171,26 +177,41 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                         {
                                             simo1=simo1+(1-distanceMatrix[p1][((c->getTrack(i)).getSession(j)).getPaper(o)]);
                                             simn2=simn2+(1-distanceMatrix[p2][((c->getTrack(i)).getSession(j)).getPaper(o)]);
-                                            diffo2=diffo2+tradeoffCoefficient*distanceMatrix[p2][((c->getTrack(i)).getSession(j)).getPaper(o)];
-                                            diffn1=diffn1+tradeoffCoefficient*distanceMatrix[p1][((c->getTrack(i)).getSession(j)).getPaper(o)];
                                         }
                                         if(o!=n)
                                         {
                                             simo2=simo2+(1-distanceMatrix[p2][((c->getTrack(l)).getSession(m)).getPaper(o)]);
                                             simn1=simn1+(1-distanceMatrix[p1][((c->getTrack(l)).getSession(m)).getPaper(o)]);
-                                            diffo1=diffo1+tradeoffCoefficient*distanceMatrix[p1][((c->getTrack(l)).getSession(m)).getPaper(o)];
-                                            diffn2=diffn2+tradeoffCoefficient*distanceMatrix[p2][((c->getTrack(l)).getSession(m)).getPaper(o)];
                                         }
                                     }
-                                    if(score-simo1-simo2-diffo1-diffo2+simn1+simn2+diffn1+diffn2<min)
+                                    for(int p=0;p<c->getParallelTracks();p++)
                                     {
-                                        min=score;
-                                        mini=i;
-                                        minj=j;
-                                        mink=k;
-                                        minl=l;
-                                        minm=m;
-                                        minn=n;
+                                        if(p!=i)
+                                        {
+                                            for(int o=0;o<c->getPapersInSession();o++)
+                                            {
+                                                diffo1=diffo1+tradeoffCoefficient*distanceMatrix[p1][((c->getTrack(p)).getSession(j)).getPaper(o)];
+                                                diffn2=diffn2+tradeoffCoefficient*distanceMatrix[p2][((c->getTrack(p)).getSession(j)).getPaper(o)];
+                                            }
+                                        }
+                                        if(p!=l)
+                                        {
+                                            for(int o=0;o<c->getPapersInSession();o++)
+                                            {
+                                                diffo2=diffo2+tradeoffCoefficient*distanceMatrix[p2][((c->getTrack(p)).getSession(m)).getPaper(o)];
+                                                diffn1=diffn1+tradeoffCoefficient*distanceMatrix[p1][((c->getTrack(p)).getSession(m)).getPaper(o)];
+                                            }
+                                        }
+                                    }
+                                    if(score-simo1-simo2-diffo1-diffo2+simn1+simn2+diffn1+diffn2>max)
+                                    {
+                                        max=score-simo1-simo2-diffo1-diffo2+simn1+simn2+diffn1+diffn2;
+                                        maxi=i;
+                                        maxj=j;
+                                        maxk=k;
+                                        maxl=l;
+                                        maxm=m;
+                                        maxn=n;
                                     }
                                 }
 
@@ -202,6 +223,16 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
             }
         }
     }
+    // if(maxi*maxj*maxk*maxl*maxm*maxn<0)
+    //     return c;
+    ans=c;
+    int temp1,temp2;
+    temp1=((ans->getTrack(maxl)).getSession(maxm)).getPaper(maxn);
+    temp2=((ans->getTrack(maxi)).getSession(maxj)).getPaper(maxk);
+    ans->setPaper(maxl,maxm,maxn,temp2);
+    ans->setPaper(maxi,maxj,maxk,temp1);
+    ans->setScore(max);
+    return ans;
 }
 
 Conference* SessionOrganizer::maxScoreConference()

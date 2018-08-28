@@ -78,7 +78,7 @@ int main ( int argc, char** argv )
     organizer->organizePapersRandomly ( );
     organizer->maxScoreConference();
     double maxscore = organizer->scoreOrganization();
-    
+
     while(organizer->getStatusProgram()){
         cout << "chalo while loop chala"<<endl;
         organizer->randomRestart();

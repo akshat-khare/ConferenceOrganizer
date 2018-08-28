@@ -237,11 +237,22 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
 
 Conference* SessionOrganizer::maxScoreConference()
 {
-    while(bestNeighbourConference(conference)!=conference)
+    // Conference * tempconf = new 
+    Conference * tempconf = conference->copyConf();
+    bool localmaximanotfound = true;
+    while(bestNeighbourConference(tempconf)->getScore()!=tempconf->getScore());
     {
         conference=bestNeighbourConference(conference);
     }
-    return conference;
+    while(localmaximanotfound){
+        Conference * bestneighbour = bestNeighbourConference(tempconf);
+        if(bestneighbour->getScore()!= tempconf->getScore()){
+            tempconf = bestneighbour->copyConf();
+        }else{
+            localmaximanotfound=false;
+        }
+    }
+    return tempconf;
 }
 
 void SessionOrganizer::readInInputFile ( string filename )

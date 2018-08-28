@@ -88,6 +88,23 @@ bool Conference::isSameConference(Conference * confm){
     return true;
 }
 
+Conference * Conference::copyConf(){
+    Conference * ansconf = new Conference(this->parallelTracks, this->sessionsInTrack, this->papersInSession);
+    for ( int i = 0; i < this->sessionsInTrack; i++ )
+    {
+        for ( int j = 0; j < this->parallelTracks; j++ )
+        {
+            for ( int k = 0; k < this->papersInSession; k++ )
+            {
+                
+                ansconf->setPaper ( j, i, k, this->getTrack(j).getSession(i).getPaper(k));
+
+            }
+        }
+    }
+    ansconf->score = this->score;
+    return ansconf;
+}
 void Conference::setPaper ( int trackIndex, int sessionIndex, int paperIndex, int paperId )
 {
     if ( this->parallelTracks > trackIndex )

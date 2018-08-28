@@ -11,19 +11,21 @@
 
 SessionOrganizer::SessionOrganizer ( )
 {
-    clocki = clock();
+    
     parallelTracks = 0;
     papersInSession = 0;
     sessionsInTrack = 0;
     processingTimeInMinutes = 0;
     tradeoffCoefficient = 1.0;
-    isProgramRunning =true;
+    
 }
 
 SessionOrganizer::SessionOrganizer ( string filename )
 {
     readInInputFile ( filename );
     conference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
+    isProgramRunning =true;
+    clocki = clock();
 }
 
 void SessionOrganizer::organizePapers ( )
@@ -148,7 +150,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                                 // track and if its equal than the session no. of second paper should be
                                                 // more than that of first paper(this is to avoid repeatations.)
                             {
-                                int randp = ((double) rand() / (RAND_MAX));
+                                double randp = ((double) rand() / (RAND_MAX));
                                 if(j==m && randp < 0.9)//same time slot
                                 {
                                     int p1=((c->getTrack(i)).getSession(j)).getPaper(k);

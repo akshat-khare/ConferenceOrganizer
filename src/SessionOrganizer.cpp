@@ -53,7 +53,7 @@ void SessionOrganizer::organizePapersRandomly ( )
     
     Conference * tempconference;
     double tempscore = 0.0;
-    for(int randomiter=0;randomiter<10* conference->getNumPapers();randomiter++){
+    for(int randomiter=0;randomiter<2;randomiter++){//randomiter<10* conference->getNumPapers()
         // cout << "randomiter is "<< randomiter << endl;
         tempconference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
         std::vector<int> myvector;
@@ -124,7 +124,7 @@ void SessionOrganizer::randomRestart(){
 Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
 {
     
-    Conference* ans;
+    // Conference* ans;
     double score=c->getScore();
     double max=score;
     int maxi,maxj,maxk,maxl,maxm,maxn;
@@ -151,7 +151,8 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                                 // more than that of first paper(this is to avoid repeatations.)
                             {
                                 double randp = ((double) rand() / (RAND_MAX));
-                                if(j==m && randp < 0.9)//same time slot
+                                // cout << "randp is "<< randp <<endl;
+                                if(j==m && randp<=0.8)//same time slot
                                 {
                                     int p1=((c->getTrack(i)).getSession(j)).getPaper(k);
                                     int p2=((c->getTrack(l)).getSession(m)).getPaper(n);
@@ -192,7 +193,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                         maxn=n;
                                     }
                                 }
-                                else if(randp >=0.9)//different time slot
+                                else if(randp <=0.05)//different time slot
                                 {
                                     int p1=((c->getTrack(i)).getSession(j)).getPaper(k);
                                     int p2=((c->getTrack(l)).getSession(m)).getPaper(n);
@@ -259,14 +260,14 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
     }
     // if(maxi*maxj*maxk*maxl*maxm*maxn<0)
     //     return c;
-    ans=c->copyConf();
+    // ans=c->copyConf();
     int temp1,temp2;
-    temp1=((ans->getTrack(maxl)).getSession(maxm)).getPaper(maxn);
-    temp2=((ans->getTrack(maxi)).getSession(maxj)).getPaper(maxk);
-    ans->setPaper(maxl,maxm,maxn,temp2);
-    ans->setPaper(maxi,maxj,maxk,temp1);
-    ans->setScore(max);
-    return ans;
+    temp1=((c->getTrack(maxl)).getSession(maxm)).getPaper(maxn);
+    temp2=((c->getTrack(maxi)).getSession(maxj)).getPaper(maxk);
+    c->setPaper(maxl,maxm,maxn,temp2);
+    c->setPaper(maxi,maxj,maxk,temp1);
+    c->setScore(max);
+    return c;
 }
 
 Conference* SessionOrganizer::maxScoreConference()
@@ -280,28 +281,29 @@ Conference* SessionOrganizer::maxScoreConference()
     //     conference=bestNeighbourConference(conference);
     // }
     cout<<"original is " <<tempconf->getScore()<<endl;
-    tempconf->printConferenceConsole();
+    // tempconf->printConferenceConsole();
 
     while(localmaximanotfound){
-        cout <<"------------------------------------------------------"<<(float)clock()/CLOCKS_PER_SEC<<endl;
+        // cout <<"------------------------------------------------------"<<(float)clock()/CLOCKS_PER_SEC<<endl;
         float timeyet = (float)(clock()- this->clocki)/CLOCKS_PER_SEC;
-        cout << "time is "<< timeyet<<endl;
-        if(timeyet > 30){
+        // cout << "time is "<< timeyet<<endl;
+        if(timeyet > 120){
             cout << "stop stop stop stop"<<endl;
             this->isProgramRunning=false;
             break;
         }
+        double prevscore = tempconf->getScore();
         Conference * bestneighbour = bestNeighbourConference(tempconf);
         cout << "BEST NEIGHBOUR IS -------------------------" <<bestneighbour->getScore()<<endl;
         // bestneighbour->printConferenceConsole();
-        if(bestneighbour->getScore()!= tempconf->getScore()){
-            tempconf = bestneighbour->copyConf();
+        if(bestneighbour->getScore()!= prevscore){
+            // tempconf = bestneighbour->copyConf();
         }else{
             cout << "reached end --------------------------------" <<endl;
             localmaximanotfound=false;
         }
     }
-    conference = tempconf->copyConf();
+    conference = tempconf;
     cout << "hill start end "<< endl;
     return tempconf;
 }

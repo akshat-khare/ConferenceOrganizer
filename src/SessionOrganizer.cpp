@@ -11,11 +11,13 @@
 
 SessionOrganizer::SessionOrganizer ( )
 {
+    clocki = clock();
     parallelTracks = 0;
     papersInSession = 0;
     sessionsInTrack = 0;
     processingTimeInMinutes = 0;
     tradeoffCoefficient = 1.0;
+    isProgramRunning =true;
 }
 
 SessionOrganizer::SessionOrganizer ( string filename )
@@ -38,6 +40,10 @@ void SessionOrganizer::organizePapers ( )
             }
         }
     }
+}
+
+bool SessionOrganizer::getStatusProgram(){
+    return this->isProgramRunning;
 }
 
 void SessionOrganizer::organizePapersRandomly ( )
@@ -90,8 +96,32 @@ void SessionOrganizer::organizePapersRandomly ( )
     }
     conference->setScore(tempscore);
 }
+
+void SessionOrganizer::randomRestart(){
+    
+    Conference * tempconference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
+    std::vector<int> myvector;
+    for (int i=0; i<numpapers; ++i) myvector.push_back(i);
+    std::random_shuffle ( myvector.begin(), myvector.end() );
+    int paperCounter = 0;
+    for ( int i = 0; i < tempconference->getSessionsInTrack ( ); i++ )
+    {
+        for ( int j = 0; j < tempconference->getParallelTracks ( ); j++ )
+        {
+            for ( int k = 0; k < tempconference->getPapersInSession ( ); k++ )
+            {
+                tempconference->setPaper ( j, i, k, myvector[paperCounter]);
+                paperCounter++;
+            }
+        }
+    }
+    tempconference->setScore(scoreOrganizationarg(tempconference));
+    conference = tempconference->copyConf();
+
+}
 Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
 {
+    
     Conference* ans;
     double score=c->getScore();
     double max=score;
@@ -240,6 +270,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
 Conference* SessionOrganizer::maxScoreConference()
 {
     // Conference * tempconf = new 
+
     Conference * tempconf = conference->copyConf();
     bool localmaximanotfound = true;
     // while(bestNeighbourConference(tempconf)->getScore()!=tempconf->getScore());
@@ -250,6 +281,14 @@ Conference* SessionOrganizer::maxScoreConference()
     tempconf->printConferenceConsole();
 
     while(localmaximanotfound){
+        cout <<"------------------------------------------------------"<<(float)clock()/CLOCKS_PER_SEC<<endl;
+        float timeyet = (float)(clock()- this->clocki)/CLOCKS_PER_SEC;
+        cout << "time is "<< timeyet<<endl;
+        if(timeyet > 30){
+            cout << "stop stop stop stop"<<endl;
+            this->isProgramRunning=false;
+            break;
+        }
         Conference * bestneighbour = bestNeighbourConference(tempconf);
         cout << "BEST NEIGHBOUR IS -------------------------" <<bestneighbour->getScore()<<endl;
         // bestneighbour->printConferenceConsole();

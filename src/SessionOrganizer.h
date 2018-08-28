@@ -40,7 +40,8 @@ private:
 
     double processingTimeInMinutes ;
     double tradeoffCoefficient ; // the tradeoff coefficient
-
+    clock_t clocki;
+    bool isProgramRunning;
 
 public:
     SessionOrganizer();
@@ -54,8 +55,8 @@ public:
      * @return the similarity matrix.
      */
     void readInInputFile(string filename);
-    
-    
+    void randomRestart();
+    bool getStatusProgram();
     
     /**
      * Organize the papers according to some algorithm.

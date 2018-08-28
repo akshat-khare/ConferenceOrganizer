@@ -77,11 +77,22 @@ int main ( int argc, char** argv )
     std::srand ( unsigned ( std::time(0) ) );
     organizer->organizePapersRandomly ( );
     organizer->maxScoreConference();
+    double maxscore = organizer->scoreOrganization();
+    
+    while(organizer->getStatusProgram()){
+        cout << "chalo while loop chala"<<endl;
+        organizer->randomRestart();
+        organizer->maxScoreConference();
+        if(organizer->scoreOrganization()>maxscore){
+            maxscore = organizer->scoreOrganization();
+        }
+    }
+    
 
     organizer->printSessionOrganiser ( argv[2]);
 
     // Score the organization against the gold standard.
-    double score = organizer->scoreOrganization ( );
+    double score = maxscore;
     cout<< "score:"<<score<<endl;
 
     return 0;

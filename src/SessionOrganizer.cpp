@@ -287,7 +287,7 @@ Conference* SessionOrganizer::maxScoreConference()
         // cout <<"------------------------------------------------------"<<(float)clock()/CLOCKS_PER_SEC<<endl;
         float timeyet = (float)(clock()- this->clocki)/CLOCKS_PER_SEC;
         // cout << "time is "<< timeyet<<endl;
-        if(timeyet > 120){
+        if(timeyet > 3){
             cout << "stop stop stop stop"<<endl;
             this->isProgramRunning=false;
             break;
@@ -379,6 +379,9 @@ double** SessionOrganizer::getDistanceMatrix ( )
 void SessionOrganizer::printSessionOrganiser ( char * filename)
 {
     conference->printConference ( filename);
+}
+Conference * SessionOrganizer::getConference(){
+    return this->conference;
 }
 
 double SessionOrganizer::scoreOrganization ( )

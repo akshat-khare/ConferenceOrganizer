@@ -29,7 +29,7 @@ private:
     int papersInSession;
 
     // score of this conference arrangement.
-    int score;
+    double score;
 public:
     Conference();
     
@@ -73,9 +73,9 @@ public:
     int getPapersInSession();
     
     
-    int getScore ( );
+    double getScore ( );
 
-    void setScore(int score);
+    void setScore(double score);
     /**
      * Gets the track at the specified index.
      * @param index is the index of the specified track.
@@ -95,8 +95,9 @@ public:
      */
     void setPaper(int trackIndex, int sessionIndex, int paperIndex, int paperId);
     
-    
+    int  getNumPapers();
     void printConference(char *);
+    void printConferenceConsole();
 };
 
 #endif	/* CONFERENCE_H */

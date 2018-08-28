@@ -52,7 +52,7 @@
 #include <cstdlib>
 
 #include "SessionOrganizer.h"
-
+#include <ctime>
 using namespace std;
 
 /*
@@ -74,7 +74,9 @@ int main ( int argc, char** argv )
     SessionOrganizer *organizer  = new SessionOrganizer( inputfilename );
 
     // Organize the papers into tracks based on similarity.
+    std::srand ( unsigned ( std::time(0) ) );
     organizer->organizePapersRandomly ( );
+    organizer->maxScoreConference();
 
     organizer->printSessionOrganiser ( argv[2]);
 

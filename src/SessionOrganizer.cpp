@@ -42,10 +42,10 @@ void SessionOrganizer::organizePapers ( )
 
 void SessionOrganizer::organizePapersRandomly ( )
 {
-    std::srand ( unsigned ( std::time(0) ) );
+    
     Conference * tempconference;
     double tempscore = 0.0;
-    for(int randomiter=0;randomiter<100;randomiter++){
+    for(int randomiter=0;randomiter<10* conference->getNumPapers();randomiter++){
         // cout << "randomiter is "<< randomiter << endl;
         tempconference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
         std::vector<int> myvector;
@@ -88,12 +88,13 @@ void SessionOrganizer::organizePapersRandomly ( )
         }
 
     }
+    conference->setScore(tempscore);
 }
 Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
 {
     Conference* ans;
-    int score=c->getScore();
-    int max=score;
+    double score=c->getScore();
+    double max=score;
     int maxi,maxj,maxk,maxl,maxm,maxn;
     maxi=0;
     maxj=0;
@@ -117,19 +118,20 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                                 // track and if its equal than the session no. of second paper should be
                                                 // more than that of first paper(this is to avoid repeatations.)
                             {
-                                if(j==m)//same time slot
+                                int randp = ((double) rand() / (RAND_MAX));
+                                if(j==m && randp < 0.9)//same time slot
                                 {
                                     int p1=((c->getTrack(i)).getSession(j)).getPaper(k);
                                     int p2=((c->getTrack(l)).getSession(m)).getPaper(n);
-                                    int simo1,simn1,diffo1,diffn1,simo2,simn2,diffo2,diffn2;
-                                    simo1=0;
-                                    simo2=0;
-                                    simn1=0;
-                                    simn2=0;
-                                    diffo1=0;
-                                    diffo2=0;
-                                    diffn1=0;
-                                    diffn2=0;
+                                    double simo1,simn1,diffo1,diffn1,simo2,simn2,diffo2,diffn2;
+                                    simo1=0.0;
+                                    simo2=0.0;
+                                    simn1=0.0;
+                                    simn2=0.0;
+                                    diffo1=0.0;
+                                    diffo2=0.0;
+                                    diffn1=0.0;
+                                    diffn2=0.0;
                                     for(int o=0;o<c->getPapersInSession();o++)//similarity
                                     {
                                         if(o!=k)
@@ -158,19 +160,19 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                         maxn=n;
                                     }
                                 }
-                                else//different time slot
+                                else if(randp >=0.9)//different time slot
                                 {
                                     int p1=((c->getTrack(i)).getSession(j)).getPaper(k);
                                     int p2=((c->getTrack(l)).getSession(m)).getPaper(n);
-                                    int simo1,simn1,diffo1,diffn1,simo2,simn2,diffo2,diffn2;
-                                    simo1=0;
-                                    simo2=0;
-                                    simn1=0;
-                                    simn2=0;
-                                    diffo1=0;
-                                    diffo2=0;
-                                    diffn1=0;
-                                    diffn2=0;
+                                    double simo1,simn1,diffo1,diffn1,simo2,simn2,diffo2,diffn2;
+                                    simo1=0.0;
+                                    simo2=0.0;
+                                    simn1=0.0;
+                                    simn2=0.0;
+                                    diffo1=0.0;
+                                    diffo2=0.0;
+                                    diffn1=0.0;
+                                    diffn2=0.0;
                                     for(int o=0;o<c->getPapersInSession();o++)//similarity
                                     {
                                         if(o!=k)
@@ -225,7 +227,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
     }
     // if(maxi*maxj*maxk*maxl*maxm*maxn<0)
     //     return c;
-    ans=c;
+    ans=c->copyConf();
     int temp1,temp2;
     temp1=((ans->getTrack(maxl)).getSession(maxm)).getPaper(maxn);
     temp2=((ans->getTrack(maxi)).getSession(maxj)).getPaper(maxk);
@@ -240,18 +242,26 @@ Conference* SessionOrganizer::maxScoreConference()
     // Conference * tempconf = new 
     Conference * tempconf = conference->copyConf();
     bool localmaximanotfound = true;
-    while(bestNeighbourConference(tempconf)->getScore()!=tempconf->getScore());
-    {
-        conference=bestNeighbourConference(conference);
-    }
+    // while(bestNeighbourConference(tempconf)->getScore()!=tempconf->getScore());
+    // {
+    //     conference=bestNeighbourConference(conference);
+    // }
+    cout<<"original is " <<tempconf->getScore()<<endl;
+    tempconf->printConferenceConsole();
+
     while(localmaximanotfound){
         Conference * bestneighbour = bestNeighbourConference(tempconf);
+        cout << "BEST NEIGHBOUR IS -------------------------" <<bestneighbour->getScore()<<endl;
+        // bestneighbour->printConferenceConsole();
         if(bestneighbour->getScore()!= tempconf->getScore()){
             tempconf = bestneighbour->copyConf();
         }else{
+            cout << "reached end --------------------------------" <<endl;
             localmaximanotfound=false;
         }
     }
+    conference = tempconf->copyConf();
+    cout << "hill start end "<< endl;
     return tempconf;
 }
 

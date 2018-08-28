@@ -36,6 +36,9 @@ void Conference::initTracks ( int parallelTracks, int sessionsInTrack, int paper
     }
 }
 
+int Conference::getNumPapers(){
+    return this->parallelTracks * this->sessionsInTrack * this->papersInSession;
+}
 int Conference::getParallelTracks ( )
 {
     return parallelTracks;
@@ -51,7 +54,7 @@ int Conference::getPapersInSession ( )
     return papersInSession;
 }
 
-int Conference::getScore ( )
+double Conference::getScore ( )
 {
     return score;
 }
@@ -79,7 +82,7 @@ bool Conference::isSameConference(Conference * confm){
             {
                 // conference->setPaper ( j, i, k, paperCounter );
                 // paperCounter++;
-                if(confm->getTrack(j).getSession(i).getPaper(k) != this->getTrack(j).getSession[i].getPaper(k)){
+                if(confm->getTrack(j).getSession(i).getPaper(k) != this->getTrack(j).getSession(i).getPaper(k)){
                     return false;
                 }
             }
@@ -102,7 +105,7 @@ Conference * Conference::copyConf(){
             }
         }
     }
-    ansconf->score = this->score;
+    ansconf->setScore(this->score);
     return ansconf;
 }
 void Conference::setPaper ( int trackIndex, int sessionIndex, int paperIndex, int paperId )
@@ -119,7 +122,7 @@ void Conference::setPaper ( int trackIndex, int sessionIndex, int paperIndex, in
     }
 }
 
-void Conference::setScore(int score)
+void Conference::setScore(double score)
 {
     this->score=score;
 }
@@ -146,5 +149,29 @@ void Conference::printConference (char * filename )
     ofile.close();
     cout<<"Organization written to ";
     printf("%s :)\n",filename);
+
+}
+
+void Conference::printConferenceConsole ()
+{
+    for ( int i = 0; i < sessionsInTrack; i++ )
+    {
+        for ( int j = 0; j < parallelTracks; j++ )
+        {
+            for ( int k = 0; k < papersInSession; k++ )
+            {
+                cout<< tracks[j].getSession ( i ).getPaper ( k ) << " ";
+            }
+            if ( j != parallelTracks - 1 )
+            {
+                cout<<"| ";
+            }
+        }
+        cout<<"\n";
+    }
+    cout << "Score is "<< this->score<<endl;
+    // ofile.close();
+    // cout<<"Organization written to ";
+    // printf("%s :)\n",filename);
 
 }

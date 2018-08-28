@@ -69,6 +69,25 @@ Track Conference::getTrack ( int index )
     }
 }
 
+bool Conference::isSameConference(Conference * confm){
+    // int paperCounter = 0;
+    for ( int i = 0; i < confm->getSessionsInTrack ( ); i++ )
+    {
+        for ( int j = 0; j < confm->getParallelTracks ( ); j++ )
+        {
+            for ( int k = 0; k < confm->getPapersInSession ( ); k++ )
+            {
+                // conference->setPaper ( j, i, k, paperCounter );
+                // paperCounter++;
+                if(confm->getTrack(j).getSession(i).getPaper(k) != this->getTrack(j).getSession[i].getPaper(k)){
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
 void Conference::setPaper ( int trackIndex, int sessionIndex, int paperIndex, int paperId )
 {
     if ( this->parallelTracks > trackIndex )

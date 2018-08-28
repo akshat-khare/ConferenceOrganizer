@@ -81,7 +81,7 @@ public:
      */
     Track getTrack(int index);
     
-    
+    bool isSameConference(Conference *);
     /**
      * Sets the paper in the specified slot to the given paper id.
      * @param trackIndex is the track index.

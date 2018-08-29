@@ -8,6 +8,7 @@
 #include "Util.h"
 #include <ctime> 
 #include <algorithm>  
+#include <bits/stdc++.h>
 
 SessionOrganizer::SessionOrganizer ( )
 {
@@ -212,6 +213,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
     maxl=0;
     maxm=0;
     maxn=0;
+    bool whichtype=false;
     for(int i=0;i<c->getParallelTracks();i++)
     {
         for(int j=0;j<c->getSessionsInTrack();j++)
@@ -222,6 +224,8 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                 {
                     for(int m=0;m<c->getSessionsInTrack();m++)
                     {
+                        int inlinecheck=0;
+                        int notinlinecheck=0;
                         for ( int n = 0; n < c->getPapersInSession ( ); n++ )
                         {
                             if((i==l && j<m)||i<l)//first paper's track should be less than or equal to second parer's 
@@ -230,8 +234,19 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                             {
                                 double randp = ((double) rand() / (RAND_MAX));
                                 // cout << "randp is "<< randp <<endl;
-                                if(j==m && randp<=0.8)//same time slot   
+                                float timeyet = (float)(clock()- this->clocki)/CLOCKS_PER_SEC;
+                                int maxrow;
+                                if(j>=m)
+                                    maxrow=j;
+                                else
+                                    maxrow=m;
+                                double inlineswapprobab = 0.6;
+                                double noninlineswapprobab = 1.2*(inlineswapprobab / c->getSessionsInTrack()); 
+                                noninlineswapprobab = (0.6+ 0.4*(maxrow/c->getSessionsInTrack()))*noninlineswapprobab;
+                                if(j==m && randp<=inlineswapprobab)//same time slot   1.25*m/c->getSessionsInTrack()
                                 {
+                                    // cout << "-"<<clock();
+                                    inlinecheck++;
                                     int p1=((c->getTrack(i)).getSession(j)).getPaper(k);
                                     int p2=((c->getTrack(l)).getSession(m)).getPaper(n);
                                     double simo1,simn1,diffo1,diffn1,simo2,simn2,diffo2,diffn2;
@@ -269,10 +284,13 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                         maxl=l;
                                         maxm=m;
                                         maxn=n;
+                                        whichtype=true;
                                     }
                                 }
-                                else if(randp <=0.05)//different time slot  randp <=0.05
-                                {
+                                else if(randp <=noninlineswapprobab)//different time slot  randp <=0.05 0.25*maxrow/c->getSessionsInTrack()     0.10*maxrow/c->getSessionsInTrack()
+                                {//0.055+  0.025*maxrow/c->getSessionsInTrack()
+                                    // cout<<"+"<<clock();
+                                    notinlinecheck++;
                                     int p1=((c->getTrack(i)).getSession(j)).getPaper(k);
                                     int p2=((c->getTrack(l)).getSession(m)).getPaper(n);
                                     double simo1,simn1,diffo1,diffn1,simo2,simn2,diffo2,diffn2;
@@ -325,10 +343,14 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                         maxl=l;
                                         maxm=m;
                                         maxn=n;
+                                        whichtype=false;
                                     }
                                 }
+                                
 
                             }
+                            // if(inlinecheck>=c->getPapersInSession()*0.6 || notinlinecheck>=c->getPapersInSession()*0.0375)
+                            //     break;
                             
                         }
                     }
@@ -339,12 +361,14 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
     // if(maxi*maxj*maxk*maxl*maxm*maxn<0)
     //     return c;
     // ans=c->copyConf();
+    // cout<<endl<<"."<<endl;
     int temp1,temp2;
     temp1=((c->getTrack(maxl)).getSession(maxm)).getPaper(maxn);
     temp2=((c->getTrack(maxi)).getSession(maxj)).getPaper(maxk);
     c->setPaper(maxl,maxm,maxn,temp2);
     c->setPaper(maxi,maxj,maxk,temp1);
     c->setScore(max);
+    cout<<"type of swap="<<whichtype<<endl;
     return c;
 }
 
@@ -384,6 +408,7 @@ Conference* SessionOrganizer::maxScoreConference()
     }
     conference = tempconf->copyConf();
     cout << "hill start end "<< endl;
+    cout<<"time="<<clocki<<endl;
     return tempconf;
 }
 

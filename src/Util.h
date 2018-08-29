@@ -35,5 +35,7 @@ void splitString(string message, string delimiter, string result[], int n) {
     }
 }
 
+
+
 #endif	/* UTIL_H */
 

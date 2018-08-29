@@ -46,7 +46,9 @@ private:
 public:
     SessionOrganizer();
     SessionOrganizer(string filename);
-    
+    float getStartClock();
+    double getProcessingTimeInMinutes();
+    void setConference(Conference *);
     
     /**
      * Read in the number of parallel tracks, papers in session, sessions

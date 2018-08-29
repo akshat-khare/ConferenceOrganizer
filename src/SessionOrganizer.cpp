@@ -22,10 +22,11 @@ SessionOrganizer::SessionOrganizer ( )
 
 SessionOrganizer::SessionOrganizer ( string filename )
 {
+    clocki = clock();
     readInInputFile ( filename );
     conference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
     isProgramRunning =true;
-    clocki = clock();
+    
 }
 
 void SessionOrganizer::organizePapers ( )
@@ -363,8 +364,9 @@ Conference* SessionOrganizer::maxScoreConference()
     while(localmaximanotfound){
         // cout <<"------------------------------------------------------"<<(float)clock()/CLOCKS_PER_SEC<<endl;
         float timeyet = (float)(clock()- this->clocki)/CLOCKS_PER_SEC;
-        // cout << "time is "<< timeyet<<endl;
-        if(timeyet > 3){
+        cout << "time is "<< timeyet<<endl;
+        cout << ((this->processingTimeInMinutes)*60-2) <<endl;
+        if(timeyet > ((this->processingTimeInMinutes)*60-2)){
             cout << "stop stop stop stop"<<endl;
             this->isProgramRunning=false;
             break;
@@ -380,12 +382,21 @@ Conference* SessionOrganizer::maxScoreConference()
             localmaximanotfound=false;
         }
     }
-    conference = tempconf;
+    conference = tempconf->copyConf();
     cout << "hill start end "<< endl;
     return tempconf;
 }
 
+float SessionOrganizer::getStartClock(){
+    return this->clocki;
+}
 
+double SessionOrganizer::getProcessingTimeInMinutes(){
+    return this->processingTimeInMinutes;
+}
+void SessionOrganizer::setConference(Conference * tempconf){
+    conference = tempconf->copyConf();
+}
 void SessionOrganizer::readInInputFile ( string filename )
 {
     vector<string> lines;

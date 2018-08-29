@@ -40,7 +40,7 @@ private:
 
     double processingTimeInMinutes ;
     double tradeoffCoefficient ; // the tradeoff coefficient
-    clock_t clocki;
+    int clocki;
     bool isProgramRunning;
 
 public:
@@ -51,7 +51,7 @@ public:
     double noninlineswapprobabfactor;
     SessionOrganizer();
     SessionOrganizer(string filename);
-    float getStartClock();
+    int getStartClock();
     double getProcessingTimeInMinutes();
     void setConference(Conference *);
     

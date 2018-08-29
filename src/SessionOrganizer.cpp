@@ -23,7 +23,7 @@ SessionOrganizer::SessionOrganizer ( )
 
 SessionOrganizer::SessionOrganizer ( string filename )
 {
-    clocki = clock();
+    clocki = time(NULL);
     readInInputFile ( filename );
     conference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
     isProgramRunning =true;
@@ -236,7 +236,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                             {
                                 double randp = ((double) rand() / (RAND_MAX));
                                 // cout << "randp is "<< randp <<endl;
-                                float timeyet = (float)(clock()- this->clocki)/CLOCKS_PER_SEC;
+                                float timeyet = (float)(time(NULL)- this->clocki);
                                 int maxrow;
                                 if(j>=m)
                                     maxrow=j;
@@ -385,16 +385,16 @@ Conference* SessionOrganizer::maxScoreConference()
     // {
     //     conference=bestNeighbourConference(conference);
     // }
-    cout<<"original is " <<tempconf->getScore()<<endl;
+    // cout<<"original is " <<tempconf->getScore()<<endl;
     // tempconf->printConferenceConsole();
 
     while(localmaximanotfound){
-        // cout <<"------------------------------------------------------"<<(float)clock()/CLOCKS_PER_SEC<<endl;
+        // cout <<"------------------------------------------------------"<<(float)clock()<<endl;
         // cout << "inlineswapprobab "<< inlineswapprobab << " noninlineswapprobab "<< noninlineswapprobab<<endl;  // remove cout
-        float timeyet = (float)(clock()- this->clocki)/CLOCKS_PER_SEC;
+        int timeyet = (time(NULL)- this->clocki);
         // cout << "time is "<< timeyet<<endl;                                                       //remove cout
         // cout << ((this->processingTimeInMinutes)*60-2) <<endl;
-        if(timeyet > ((this->processingTimeInMinutes)*60-2)){
+        if(timeyet > ((this->processingTimeInMinutes)*60-3)){
             cout << "stop stop stop stop"<<endl;                                                    //remove cout
             this->isProgramRunning=false;
             break;
@@ -416,7 +416,7 @@ Conference* SessionOrganizer::maxScoreConference()
     return tempconf;
 }
 
-float SessionOrganizer::getStartClock(){
+int SessionOrganizer::getStartClock(){
     return this->clocki;
 }
 

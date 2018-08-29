@@ -81,7 +81,7 @@ int main ( int argc, char** argv )
     ansconf = organizer->getConference()->copyConf();
     cout<< "this max is "<< greedyscore <<endl;
     float curtime = (float)(clock()- organizer->getStartClock())/CLOCKS_PER_SEC;
-    cout <<"processing time is "<< organizer->getProcessingTimeInMinutes()*60<<endl;
+    // cout <<"processing time is "<< organizer->getProcessingTimeInMinutes()*60<<endl;
     while(curtime<8 && curtime<(organizer->getProcessingTimeInMinutes() * (60/30))){
         organizer->organizePapersGreedily();
         float thisgreedyscore = organizer->getConference()->getScore();
@@ -89,7 +89,7 @@ int main ( int argc, char** argv )
             greedyscore=thisgreedyscore;
             ansconf = organizer->getConference()->copyConf();
         }
-        cout<< "this max is "<< thisgreedyscore <<endl;
+        // cout<< "this max is "<< thisgreedyscore <<endl;
         curtime = (float)(clock()- organizer->getStartClock())/CLOCKS_PER_SEC;
     }
     // organizer->organizePapersGreedily();
@@ -109,8 +109,14 @@ int main ( int argc, char** argv )
 
 
     while(organizer->getStatusProgram()){
-        cout << "chalo while loop chala"<<endl;
+        // organizer->probabilityfactor = organizer->probabilityfactor * 1.5;
+        organizer->inlineprobabilityfactor = organizer->inlineprobabilityfactor * 1.01;
+        organizer->noninlineswapprobabfactor = organizer->noninlineswapprobabfactor * 1.5;
+        cout << "inlineswapprobab "<< organizer->inlineswapprobab << " noninlineswapprobab "<< organizer->noninlineswapprobab<<endl;  // remove cout
+
+        // cout << "chalo while loop chala"<<endl;
         // organizer->randomRestart();
+        
         organizer->organizePapersGreedily();
         organizer->maxScoreConference();
         double thisscore = organizer->scoreOrganization();

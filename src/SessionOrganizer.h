@@ -44,6 +44,11 @@ private:
     bool isProgramRunning;
 
 public:
+    double probabilityfactor;
+    double inlineswapprobab;
+    double inlineprobabilityfactor;
+    double noninlineswapprobab;
+    double noninlineswapprobabfactor;
     SessionOrganizer();
     SessionOrganizer(string filename);
     float getStartClock();

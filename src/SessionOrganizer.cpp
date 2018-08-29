@@ -27,7 +27,9 @@ SessionOrganizer::SessionOrganizer ( string filename )
     readInInputFile ( filename );
     conference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
     isProgramRunning =true;
-    
+    probabilityfactor = 0.6;
+    inlineprobabilityfactor=1;
+    noninlineswapprobabfactor=1;
 }
 
 void SessionOrganizer::organizePapers ( )
@@ -213,7 +215,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
     maxl=0;
     maxm=0;
     maxn=0;
-    bool whichtype=false;
+    // bool whichtype=false;
     for(int i=0;i<c->getParallelTracks();i++)
     {
         for(int j=0;j<c->getSessionsInTrack();j++)
@@ -240,9 +242,10 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                     maxrow=j;
                                 else
                                     maxrow=m;
-                                double inlineswapprobab = 0.6;
-                                double noninlineswapprobab = 1.2*(inlineswapprobab / c->getSessionsInTrack()); 
-                                noninlineswapprobab = (0.6+ 0.4*(maxrow/c->getSessionsInTrack()))*noninlineswapprobab;
+                                inlineswapprobab = probabilityfactor*inlineprobabilityfactor;
+                                noninlineswapprobab = 1.2*(inlineswapprobab / c->getSessionsInTrack()); 
+                                noninlineswapprobab = (0.6+ 0.4*(maxrow/c->getSessionsInTrack()))*noninlineswapprobab*noninlineswapprobabfactor;
+                                // cout << "inlineswapprobab "<< inlineswapprobab << " noninlineswapprobab "<< noninlineswapprobab<<endl;
                                 if(j==m && randp<=inlineswapprobab)//same time slot   1.25*m/c->getSessionsInTrack()
                                 {
                                     // cout << "-"<<clock();
@@ -284,7 +287,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                         maxl=l;
                                         maxm=m;
                                         maxn=n;
-                                        whichtype=true;
+                                        // whichtype=true;
                                     }
                                 }
                                 else if(randp <=noninlineswapprobab)//different time slot  randp <=0.05 0.25*maxrow/c->getSessionsInTrack()     0.10*maxrow/c->getSessionsInTrack()
@@ -343,7 +346,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
                                         maxl=l;
                                         maxm=m;
                                         maxn=n;
-                                        whichtype=false;
+                                        // whichtype=false;
                                     }
                                 }
                                 
@@ -368,7 +371,7 @@ Conference* SessionOrganizer::bestNeighbourConference(Conference* c)
     c->setPaper(maxl,maxm,maxn,temp2);
     c->setPaper(maxi,maxj,maxk,temp1);
     c->setScore(max);
-    cout<<"type of swap="<<whichtype<<endl;
+    // cout<<"type of swap="<<whichtype<<endl;
     return c;
 }
 
@@ -387,28 +390,29 @@ Conference* SessionOrganizer::maxScoreConference()
 
     while(localmaximanotfound){
         // cout <<"------------------------------------------------------"<<(float)clock()/CLOCKS_PER_SEC<<endl;
+        // cout << "inlineswapprobab "<< inlineswapprobab << " noninlineswapprobab "<< noninlineswapprobab<<endl;  // remove cout
         float timeyet = (float)(clock()- this->clocki)/CLOCKS_PER_SEC;
-        cout << "time is "<< timeyet<<endl;
-        cout << ((this->processingTimeInMinutes)*60-2) <<endl;
+        // cout << "time is "<< timeyet<<endl;                                                       //remove cout
+        // cout << ((this->processingTimeInMinutes)*60-2) <<endl;
         if(timeyet > ((this->processingTimeInMinutes)*60-2)){
-            cout << "stop stop stop stop"<<endl;
+            cout << "stop stop stop stop"<<endl;                                                    //remove cout
             this->isProgramRunning=false;
             break;
         }
         double prevscore = tempconf->getScore();
         Conference * bestneighbour = bestNeighbourConference(tempconf);
-        cout << "BEST NEIGHBOUR IS -------------------------" <<bestneighbour->getScore()<<endl;
+        // cout << "BEST NEIGHBOUR IS -------------------------" <<bestneighbour->getScore()<<endl;
         // bestneighbour->printConferenceConsole();
         if(bestneighbour->getScore()!= prevscore){
             // tempconf = bestneighbour->copyConf();
         }else{
-            cout << "reached end --------------------------------" <<endl;
+            // cout << "reached end --------------------------------" <<endl;
             localmaximanotfound=false;
         }
     }
     conference = tempconf->copyConf();
-    cout << "hill start end "<< endl;
-    cout<<"time="<<clocki<<endl;
+    // cout << "hill start end "<< endl;
+    // cout<<"time="<<clocki<<endl;
     return tempconf;
 }
 

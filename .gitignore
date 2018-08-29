@@ -35,3 +35,4 @@ src/main
 outputfiles/*
 inputfiles/*
 formatChecker.jar
+*txt

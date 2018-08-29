@@ -90,12 +90,13 @@ int main ( int argc, char** argv )
         organizer->maxScoreConference();
         if(organizer->scoreOrganization()>maxscore){
             maxscore = organizer->scoreOrganization();
+            ansconf = organizer->getConference()->copyConf();
         }
     }
     
 
-    organizer->printSessionOrganiser ( argv[2]);
-
+    // organizer->printSessionOrganiser ( argv[2]);
+    ansconf->printConference(argv[2] );
     // Score the organization against the gold standard.
     double score = maxscore;
     cout<< "score:"<<score<<endl;

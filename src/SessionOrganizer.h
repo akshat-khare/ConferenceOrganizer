@@ -63,18 +63,18 @@ public:
      */
     void organizePapers();
     void organizePapersRandomly();
-    void organizePapersGreedy();
+    void organizePapersGreedily();
+    int getithNonZeroValueVec(vector<int>, int);
     /**
      * Returns the neighbour conference with the best score
      */
     Conference* bestNeighbourConference(Conference* c);
-
+    Conference* getConference();
     
     /**
      * Main function that maximises the outcome.
      */
     Conference* maxScoreConference();
-    Conference * getConference();
     
     
     /**

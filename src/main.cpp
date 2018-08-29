@@ -72,24 +72,28 @@ int main ( int argc, char** argv )
     
     // Initialize the conference organizer.
     SessionOrganizer *organizer  = new SessionOrganizer( inputfilename );
-
+    Conference * ansconf;
     // Organize the papers into tracks based on similarity.
     std::srand ( unsigned ( std::time(0) ) );
-    Conference * ansconf;
-    organizer->organizePapersRandomly ( );
-    organizer->maxScoreConference();
-    ansconf = organizer->getConference()->copyConf();
-    double maxscore = organizer->scoreOrganization();
 
-    while(organizer->getStatusProgram()){
-        cout << "chalo while loop chala"<<endl;
-        organizer->randomRestart();
-        organizer->maxScoreConference();
-        if(organizer->scoreOrganization()>maxscore){
-            maxscore = organizer->scoreOrganization();
-            ansconf = organizer->getConference()->copyConf();
-        }
-    }
+    organizer->organizePapersGreedily();
+    ansconf = organizer->getConference()->copyConf();
+    double maxscore = organizer->getConference()->getScore();
+    // organizer->organizePapersRandomly ( );
+    organizer->maxScoreConference();
+    maxscore = organizer->scoreOrganization();
+    
+
+    // while(organizer->getStatusProgram()){
+    //     cout << "chalo while loop chala"<<endl;
+    //     // organizer->randomRestart();
+    //     organizer->organizePapersGreedily();
+    //     organizer->maxScoreConference();
+    //     if(organizer->scoreOrganization()>maxscore){
+    //         maxscore = organizer->scoreOrganization();
+    //         ansconf = organizer->getConference()->copyConf();
+    //     }
+    // }
     
 
     // organizer->printSessionOrganiser ( argv[2]);

@@ -385,9 +385,7 @@ Conference* SessionOrganizer::maxScoreConference()
     return tempconf;
 }
 
-Conference * SessionOrganizer::getConference(){
-    return this->conference;
-}
+
 void SessionOrganizer::readInInputFile ( string filename )
 {
     vector<string> lines;

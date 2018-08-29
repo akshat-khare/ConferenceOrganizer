@@ -72,11 +72,12 @@ int main ( int argc, char** argv )
     
     // Initialize the conference organizer.
     SessionOrganizer *organizer  = new SessionOrganizer( inputfilename );
-
+    Conference * ansconf;
     // Organize the papers into tracks based on similarity.
     std::srand ( unsigned ( std::time(0) ) );
 
     organizer->organizePapersGreedily();
+    ansconf = organizer->getConference()->copyConf();
     double maxscore = organizer->getConference()->getScore();
     // organizer->organizePapersRandomly ( );
     organizer->maxScoreConference();

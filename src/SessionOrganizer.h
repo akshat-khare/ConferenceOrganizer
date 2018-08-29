@@ -75,7 +75,6 @@ public:
      * Main function that maximises the outcome.
      */
     Conference* maxScoreConference();
-    Conference * getConference();
     
     
     /**

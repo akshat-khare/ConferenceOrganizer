@@ -75,13 +75,18 @@ int main ( int argc, char** argv )
 
     // Organize the papers into tracks based on similarity.
     std::srand ( unsigned ( std::time(0) ) );
-    organizer->organizePapersRandomly ( );
+
+    organizer->organizePapersGreedily();
+    double maxscore = organizer->getConference()->getScore();
+    // organizer->organizePapersRandomly ( );
     organizer->maxScoreConference();
-    double maxscore = organizer->scoreOrganization();
+    maxscore = organizer->scoreOrganization();
+    
 
     while(organizer->getStatusProgram()){
         cout << "chalo while loop chala"<<endl;
-        organizer->randomRestart();
+        // organizer->randomRestart();
+        organizer->organizePapersGreedily();
         organizer->maxScoreConference();
         if(organizer->scoreOrganization()>maxscore){
             maxscore = organizer->scoreOrganization();

@@ -99,6 +99,56 @@ void SessionOrganizer::organizePapersRandomly ( )
     conference->setScore(tempscore);
 }
 
+// void SessionOrganizer::organizePapersGreedy ( )
+// {
+    
+//     Conference * tempconference;
+//     double tempscore = 0.0;
+//     for(int randomiter=0;randomiter<2;randomiter++){//randomiter<10* conference->getNumPapers()
+//         // cout << "randomiter is "<< randomiter << endl;
+//         tempconference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
+//         std::vector<int> myvector;
+//         for (int i=0; i<numpapers; ++i) myvector.push_back(i);
+//         std::random_shuffle ( myvector.begin(), myvector.end() );
+//         int paperCounter = 0;
+//         for ( int i = 0; i < tempconference->getSessionsInTrack ( ); i++ )
+//         {
+//             for ( int j = 0; j < tempconference->getParallelTracks ( ); j++ )
+//             {
+//                 for ( int k = 0; k < tempconference->getPapersInSession ( ); k++ )
+//                 {
+//                     tempconference->setPaper ( j, i, k, myvector[paperCounter]);
+//                     paperCounter++;
+//                 }
+//             }
+//         }
+
+//         // if(randomiter==0){
+
+//         // }
+//         double thisscore = scoreOrganizationarg(tempconference);
+//         // cout << "thisscore is "<<thisscore<<endl;
+//         if(thisscore> tempscore){
+//             conference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
+//             int paperCounter = 0;
+//             for ( int i = 0; i < conference->getSessionsInTrack ( ); i++ )
+//             {
+//                 for ( int j = 0; j < conference->getParallelTracks ( ); j++ )
+//                 {
+//                     for ( int k = 0; k < conference->getPapersInSession ( ); k++ )
+//                     {+
+//                         conference->setPaper ( j, i, k, tempconference->getTrack(j).getSession(i).getPaper(k));
+//                         paperCounter++;
+//                     }
+//                 }
+//             }
+//             tempscore= thisscore;
+//             // conference = tempconference;
+//         }
+
+//     }
+//     conference->setScore(tempscore);
+// }
 void SessionOrganizer::randomRestart(){
     
     Conference * tempconference = new Conference ( parallelTracks, sessionsInTrack, papersInSession );
@@ -287,7 +337,7 @@ Conference* SessionOrganizer::maxScoreConference()
         // cout <<"------------------------------------------------------"<<(float)clock()/CLOCKS_PER_SEC<<endl;
         float timeyet = (float)(clock()- this->clocki)/CLOCKS_PER_SEC;
         // cout << "time is "<< timeyet<<endl;
-        if(timeyet > 3){
+        if(timeyet > 120){
             cout << "stop stop stop stop"<<endl;
             this->isProgramRunning=false;
             break;

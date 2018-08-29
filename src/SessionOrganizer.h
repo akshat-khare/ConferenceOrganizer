@@ -63,6 +63,7 @@ public:
      */
     void organizePapers();
     void organizePapersRandomly();
+    void organizePapersGreedy();
     /**
      * Returns the neighbour conference with the best score
      */
